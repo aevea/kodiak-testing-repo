@@ -1,0 +1,18 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: fetch
+    image: docker:git
+    commands:
+      - git fetch --tags
+
+  - name: commitsar-check
+    image: commitsar/commitsar
+    when:
+      event: [pull_request]
+    depends_on: [fetch]
+
+volumes:
+  - name: deps
+    temp: {}
